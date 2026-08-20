@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BizDeviceMapper">
+    
+    <resultMap type="BizDevice" id="BizDeviceResult">
+        <result property="deviceId"    column="device_id"    />
+        <result property="deviceCode"    column="device_code"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="deviceModel"    column="device_model"    />
+        <result property="location"    column="location"    />
+        <result property="status"    column="status"    />
+        <result property="managerId"    column="manager_id"    />
+        <result property="purchaseDate"    column="purchase_date"    />
+        <result property="lastMaintenanceTime"    column="last_maintenance_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBizDeviceVo">
+        select device_id, device_code, device_name, device_type, device_model, location, status, manager_id, purchase_date, last_maintenance_time, remark, create_by, create_time, update_by, update_time from biz_device
+    </sql>
+
+    <select id="selectBizDeviceList" parameterType="BizDevice" resultMap="BizDeviceResult">
+        <include refid="selectBizDeviceVo"/>
+        <where>  
+            <if test="deviceCode != null  and deviceCode != ''"> and device_code = #{deviceCode}</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="deviceType != null  and deviceType != ''"> and device_type = #{deviceType}</if>
+            <if test="deviceModel != null  and deviceModel != ''"> and device_model = #{deviceModel}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="managerId != null "> and manager_id = #{managerId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizDeviceByDeviceId" parameterType="Long" resultMap="BizDeviceResult">
+        <include refid="selectBizDeviceVo"/>
+        where device_id = #{deviceId}
+    </select>
+
+    <insert id="insertBizDevice" parameterType="BizDevice" useGeneratedKeys="true" keyProperty="deviceId">
+        insert into biz_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceCode != null and deviceCode != ''">device_code,</if>
+            <if test="deviceName != null and deviceName != ''">device_name,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="deviceModel != null">device_model,</if>
+            <if test="location != null">location,</if>
+            <if test="status != null">status,</if>
+            <if test="managerId != null">manager_id,</if>
+            <if test="purchaseDate != null">purchase_date,</if>
+            <if test="lastMaintenanceTime != null">last_maintenance_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceCode != null and deviceCode != ''">#{deviceCode},</if>
+            <if test="deviceName != null and deviceName != ''">#{deviceName},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="deviceModel != null">#{deviceModel},</if>
+            <if test="location != null">#{location},</if>
+            <if test="status != null">#{status},</if>
+            <if test="managerId != null">#{managerId},</if>
+            <if test="purchaseDate != null">#{purchaseDate},</if>
+            <if test="lastMaintenanceTime != null">#{lastMaintenanceTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizDevice" parameterType="BizDevice">
+        update biz_device
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceCode != null and deviceCode != ''">device_code = #{deviceCode},</if>
+            <if test="deviceName != null and deviceName != ''">device_name = #{deviceName},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="deviceModel != null">device_model = #{deviceModel},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="managerId != null">manager_id = #{managerId},</if>
+            <if test="purchaseDate != null">purchase_date = #{purchaseDate},</if>
+            <if test="lastMaintenanceTime != null">last_maintenance_time = #{lastMaintenanceTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where device_id = #{deviceId}
+    </update>
+
+    <delete id="deleteBizDeviceByDeviceId" parameterType="Long">
+        delete from biz_device where device_id = #{deviceId}
+    </delete>
+
+    <delete id="deleteBizDeviceByDeviceIds" parameterType="String">
+        delete from biz_device where device_id in 
+        <foreach item="deviceId" collection="array" open="(" separator="," close=")">
+            #{deviceId}
+        </foreach>
+    </delete>
+</mapper>
