@@ -94,6 +94,28 @@ public class BizReservationController extends BaseController
     }
 
     /**
+     * 审批通过设备预约
+     */
+    @PreAuthorize("@ss.hasPermi('system:reservation:approve')")
+    @Log(title = "设备预约", businessType = BusinessType.UPDATE)
+    @PostMapping("/approve/{reservationId}")
+    public AjaxResult approve(@PathVariable("reservationId") Long reservationId)
+    {
+        return toAjax(bizReservationService.approveBizReservation(reservationId));
+    }
+
+    /**
+     * 拒绝设备预约
+     */
+    @PreAuthorize("@ss.hasPermi('system:reservation:approve')")
+    @Log(title = "设备预约", businessType = BusinessType.UPDATE)
+    @PostMapping("/reject/{reservationId}")
+    public AjaxResult reject(@PathVariable("reservationId") Long reservationId)
+    {
+        return toAjax(bizReservationService.rejectBizReservation(reservationId));
+    }
+
+    /**
      * 删除设备预约
      */
     @PreAuthorize("@ss.hasPermi('system:reservation:remove')")

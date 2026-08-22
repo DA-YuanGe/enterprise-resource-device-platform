@@ -44,6 +44,22 @@ public interface BizReservationMapper
     public int updateBizReservation(BizReservation bizReservation);
 
     /**
+     * 审批通过设备预约
+     *
+     * @param reservationId 预约主键
+     * @return 结果
+     */
+    public int approveBizReservation(Long reservationId);
+
+    /**
+     * 拒绝设备预约
+     *
+     * @param reservationId 预约主键
+     * @return 结果
+     */
+    public int rejectBizReservation(Long reservationId);
+
+    /**
      * 删除设备预约
      *
      * @param reservationId 预约主键

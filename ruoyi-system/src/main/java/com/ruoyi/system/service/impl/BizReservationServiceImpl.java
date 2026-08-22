@@ -21,7 +21,6 @@ public class BizReservationServiceImpl implements IBizReservationService
     private BizReservationMapper bizReservationMapper;
 
     /**
-     * 查询设备预约
      */
     @Override
     public BizReservation selectBizReservationByReservationId(Long reservationId)
@@ -30,7 +29,6 @@ public class BizReservationServiceImpl implements IBizReservationService
     }
 
     /**
-     * 查询设备预约列表
      */
     @Override
     public List<BizReservation> selectBizReservationList(BizReservation bizReservation)
@@ -39,7 +37,6 @@ public class BizReservationServiceImpl implements IBizReservationService
     }
 
     /**
-     * 新增设备预约
      */
     @Override
     public int insertBizReservation(BizReservation bizReservation)
@@ -67,7 +64,6 @@ public class BizReservationServiceImpl implements IBizReservationService
     }
 
     /**
-     * 修改设备预约
      */
     @Override
     public int updateBizReservation(BizReservation bizReservation)
@@ -106,7 +102,6 @@ public class BizReservationServiceImpl implements IBizReservationService
     }
 
     /**
-     * 判断预约时间是否合法
      */
     private boolean isValidTimeRange(BizReservation bizReservation)
     {
@@ -120,6 +115,52 @@ public class BizReservationServiceImpl implements IBizReservationService
 
         // 结束时间必须晚于开始时间
         return bizReservation.getEndTime().after(bizReservation.getStartTime());
+    }
+
+    /**
+     * 审批通过设备预约
+     */
+    @Override
+    public int approveBizReservation(Long reservationId)
+    {
+        BizReservation reservation =
+                bizReservationMapper.selectBizReservationByReservationId(reservationId);
+
+        if (reservation == null)
+        {
+            return 0;
+        }
+
+        // 只有待审批状态才能通过
+        if (!"0".equals(reservation.getStatus()))
+        {
+            return 0;
+        }
+
+        return bizReservationMapper.approveBizReservation(reservationId);
+    }
+
+    /**
+     * 拒绝设备预约
+     */
+    @Override
+    public int rejectBizReservation(Long reservationId)
+    {
+        BizReservation reservation =
+                bizReservationMapper.selectBizReservationByReservationId(reservationId);
+
+        if (reservation == null)
+        {
+            return 0;
+        }
+
+        // 只有待审批状态才能拒绝
+        if (!"0".equals(reservation.getStatus()))
+        {
+            return 0;
+        }
+
+        return bizReservationMapper.rejectBizReservation(reservationId);
     }
 
     /**

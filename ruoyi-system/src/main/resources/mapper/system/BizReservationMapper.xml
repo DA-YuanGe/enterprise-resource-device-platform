@@ -116,6 +116,21 @@
         where reservation_id = #{reservationId}
     </update>
 
+
+    <update id="approveBizReservation" parameterType="Long">
+        update biz_reservation
+        set status = '1'
+        where reservation_id = #{reservationId}
+          and status = '0'
+    </update>
+
+    <update id="rejectBizReservation" parameterType="Long">
+        update biz_reservation
+        set status = '3'
+        where reservation_id = #{reservationId}
+          and status = '0'
+    </update>
+
     <select id="countReservationConflict"
             parameterType="BizReservation"
             resultType="int">
